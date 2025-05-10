@@ -1,0 +1,28 @@
+{
+  "image_rect": [
+    {
+      "start_x" : 102,
+      "start_y": 136,
+      "end_x": 539,
+      "end_y": 552
+    },
+    {
+      "start_x": 110,
+      "start_y": 1091,
+      "end_x": 524,
+      "end_y": 1554
+    },
+    {
+      "start_x": 771,
+      "start_y": 172,
+      "end_x": 1388,
+      "end_y": 650
+    },
+    {
+      "start_x": 855,
+      "start_y": 1097,
+      "end_x": 1417,
+      "end_y": 1629
+    }
+  ]
+}
