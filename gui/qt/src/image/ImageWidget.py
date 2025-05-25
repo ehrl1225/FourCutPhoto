@@ -12,7 +12,8 @@ from .ImagePrintingWidget import ImagePrintingWidget
 from .FrameChoosingWidget import FrameChoosingWidget
 from enum import Enum
 
-from ..common.CommonWidget import CommonWidget
+from .ImageShowWidget import ImageShowWidget
+from gui.qt.src.common.CommonWidget import CommonWidget
 
 
 class ImageState(Enum):
@@ -33,6 +34,7 @@ class ImageWidget(CommonWidget):
         self.image_capture_wg = ImageCaptureWidget(self)
         self.frame_choosing_wg = FrameChoosingWidget(self)
         self.image_choosing_wg = ImageChoosingWidget(self)
+        self.image_show_wg = ImageShowWidget(self)
         self.image_printing_wg = ImagePrintingWidget(self)
         self.image_printing_done_wg = ImagePrintingDoneWidget(self)
 
@@ -52,15 +54,19 @@ class ImageWidget(CommonWidget):
         self.data_manager.loadFourCutDatas()
         self.frame_choosing_wg.setImages()
         self.frame_choosing_wg.go_next.connect(self.toImageCaptureWidget)
-        self.image_capture_wg.go_next.connect(self.toImageChoosingWidget)
+        self.image_capture_wg.go_next.connect(self.capturedImages)
         self.image_choosing_wg.go_next.connect(self.toPrintingWidget)
+        self.image_show_wg.go_back.connect(self.toImageCaptureWidget)
+        self.image_show_wg.go_next.connect(self.toPrintingWidget)
         self.image_printing_wg.go_next.connect(self.toImagePrintingDoneWidget)
         self.image_printing_done_wg.go_next.connect(self.toFrameChoosingWidget)
 
-        self.data_manager.setSelectedFrameIndex(0)
-        self.toImageCaptureWidget()
-        self.data_manager.setPhotoDirectory("61e0df235a959939eacc")
-        self.toImageChoosingWidget()
+        # self.data_manager.setSelectedFrameIndex(0)
+        # self.toImageCaptureWidget()
+        # self.data_manager.setPhotoDirectory("61e0df235a959939eacc")
+        # self.toImageChoosingWidget()
+        # self.toPrintingWidget()
+        # self.toImagePrintingDoneWidget()
 
     def hideWidget(self, wg:QWidget):
         self.vbox.removeWidget(wg)
@@ -69,6 +75,19 @@ class ImageWidget(CommonWidget):
     def showWidget(self, wg:QWidget):
         self.vbox.addWidget(wg)
         self.current_wg = wg
+
+    def capturedImages(self):
+        frame = self.data_manager.getSelectedFrame()
+        self.image_capture_wg.endCapture()
+        if frame.hasOverlayImages():
+            self.toImageShowWidget()
+        else:
+            self.toImageChoosingWidget()
+
+    def toImageShowWidget(self):
+        self.hideWidget(self.current_wg)
+        self.image_show_wg.setImages()
+        self.showWidget(self.image_show_wg)
 
     def toImagePrintingDoneWidget(self):
         self.hideWidget(self.current_wg)
@@ -92,7 +111,6 @@ class ImageWidget(CommonWidget):
         self.done_service.emit()
 
     def toImageChoosingWidget(self):
-        self.image_capture_wg.endCapture()
         self.hideWidget(self.current_wg)
         self.image_choosing_wg.setImages()
         self.showWidget(self.image_choosing_wg)

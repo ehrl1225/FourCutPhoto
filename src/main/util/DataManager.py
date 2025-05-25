@@ -4,8 +4,8 @@ import sys
 import cv2
 from PyQt6.QtGui import QImage
 
-from .FourCutData import FourCutData
-from .PhotoRect import PhotoRect
+from src.main.image.FourCutData import FourCutData
+from src.main.image.PhotoRect import PhotoRect
 import json
 import numpy as np
 import datetime
@@ -28,6 +28,8 @@ END_Y = "end_y"
 IMAGE_RECT = "image_rect"
 OVERLAY_RECT = "overlay_rect"
 IMAGE_FILE = "image_file"
+TEST_MODE = False
+DEFAULT_PHOTO_COUNT = 6
 
 class DataManager:
     """
@@ -46,9 +48,19 @@ class DataManager:
     people_count : int = 1
     selected_frame_index: int = 0
     edited_image:np.ndarray
+    photo_count: int = DEFAULT_PHOTO_COUNT
     
     def __init__(self):
         pass
+
+    def appendImage(self, image:np.ndarray):
+        self.images.append(image)
+
+    def getSelectedFrame(self):
+        return self.four_cut_datas[self.selected_frame_index]
+
+    def getPhotoCount(self):
+        return self.photo_count
 
     def setEditedImage(self, edited_image:np.ndarray):
         self.edited_image = edited_image
@@ -58,6 +70,12 @@ class DataManager:
 
     def setSelectedFrameIndex(self, selected_frame_index):
         self.selected_frame_index = selected_frame_index
+        four_cut_data = self.four_cut_datas[self.selected_frame_index]
+        if four_cut_data.hasOverlayImages():
+            self.photo_count = four_cut_data.getOverlayImageCount()
+        else:
+            self.photo_count = DEFAULT_PHOTO_COUNT
+
 
     def getSelectedFrameIndex(self):
         return self.selected_frame_index
@@ -94,6 +112,7 @@ class DataManager:
 
         for image in four_cut_images:
             img = cv2.imread(os.path.join(image_path, image))
+
             img_name = os.path.splitext(image)[0]
 
             new_json_path = os.path.join(json_path, f"{img_name}.json")
@@ -103,6 +122,7 @@ class DataManager:
             four_cut_data = self.loadJsonDatas(img, new_json_path)
 
             overlay_img_path = os.path.join(overlay_path, img_name)
+
             overlay_images = self.loadOverlayImages(overlay_img_path, four_cut_data.getOverlayImageFiles())
             four_cut_data.setOverlayImages(overlay_images)
 
@@ -143,7 +163,7 @@ class DataManager:
         images:list[np.ndarray] = list()
         for overlay_file in overlay_files:
             image_path = os.path.join(overlay_folder_path, overlay_file)
-            image = cv2.imread(image_path)
+            image = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
             images.append(image)
         return images
 
@@ -181,9 +201,9 @@ class DataManager:
     def saveQImage(self, image:QImage, index:int):
         image.save(os.path.join(self.photo_save_dir_path, f"{str(index)}.png"))
 
-    def getPhotoPaths(self):
+    def getPhotoPaths(self) -> list[str]:
         photo_path_list = []
-        for file_number in range(1,7):
+        for file_number in range(1,self.photo_count+1):
             filename = f"{file_number}.png"
             file_path = os.path.join(self.photo_save_dir_path, filename)
             photo_path_list.append(file_path)

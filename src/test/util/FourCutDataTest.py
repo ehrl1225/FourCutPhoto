@@ -1,9 +1,9 @@
-from src.main.util import FourCutData
+from src.main.image import FourCutData
 import matplotlib.pyplot as plt
 from src.test.test_main import testCase, testAll
 import numpy as np
 import json
-from src.main.util.PhotoRect import PhotoRect
+from src.main.image.PhotoRect import PhotoRect
 
 
 def loadJsonDatas(photo: np.ndarray, json_file_path: str):

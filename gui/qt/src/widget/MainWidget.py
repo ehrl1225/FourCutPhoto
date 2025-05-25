@@ -1,11 +1,11 @@
 from PyQt6.QtCore import pyqtSlot, QEvent, pyqtSignal, QRect, Qt
 from PyQt6.QtGui import QKeyEvent, QPixmap
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QPushButton, QStackedLayout
+from PyQt6.QtWidgets import QWidget, QVBoxLayout
 
-from gui.qt.src.image.ImageWidget import ImageWidget
+from gui.qt.src.image import ImageWidget
 from .SelectPeopleNumberWidget import SelectPeopleNumberWidget
 from .WelcomeWidget import WelcomeWidget
-from ..common.CommonWidget import CommonWidget
+from gui.qt.src.common.CommonWidget import CommonWidget
 
 
 class MainWidget(CommonWidget):
@@ -17,7 +17,7 @@ class MainWidget(CommonWidget):
         self.initUI()
 
     def initUI(self):
-        self.welcome_wg = WelcomeWidget()
+        self.welcome_wg = WelcomeWidget(self)
         self.spn_wg = SelectPeopleNumberWidget(self)
         self.img_wg = ImageWidget(self)
 
@@ -30,11 +30,12 @@ class MainWidget(CommonWidget):
 
         # Set background image
         # self.set_background_image("path/to/your/background.jpg")
-        self.goSelectPeopleNumber()
-        self.goImage()
+        # self.goSelectPeopleNumber()
+        # self.goImage()
+        # self.finishService()
+        # self.goSelectPeopleNumber()
 
     def setUI(self):
-
         self.welcome_wg.go_next.connect(self.goSelectPeopleNumber)
         self.spn_wg.go_next.connect(self.goImage)
         self.img_wg.done_service.connect(self.finishService)
@@ -43,12 +44,6 @@ class MainWidget(CommonWidget):
         self.vbox.removeWidget(self.welcome_wg)
         self.welcome_wg.setParent(None)
         self.vbox.addWidget(self.spn_wg)
-
-    def set_background_image(self, image_path):
-        pixmap = QPixmap(image_path)
-        palette = self.palette()
-        palette.setBrush(self.backgroundRole(), pixmap)
-        self.setPalette(palette)
 
     def goImage(self):
         self.vbox.removeWidget(self.spn_wg)

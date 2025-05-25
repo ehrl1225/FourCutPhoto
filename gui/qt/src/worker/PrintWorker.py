@@ -4,8 +4,6 @@ from PyQt6.QtCore import QThread, pyqtSignal
 from src.main.printer import Printer
 
 
-
-
 class PrintWorker(QThread):
     go:bool
     don_printing:pyqtSignal

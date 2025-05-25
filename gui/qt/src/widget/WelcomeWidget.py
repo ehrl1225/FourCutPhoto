@@ -7,7 +7,7 @@ class WelcomeWidget(QWidget):
     go_next = pyqtSignal()
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__()
         self.initUI()
 
     def initUI(self):

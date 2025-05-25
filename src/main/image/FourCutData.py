@@ -29,5 +29,22 @@ class FourCutData:
     def getOverlayImageFiles(self):
         return self.overlay_image_files
 
+    def hasOverlayImages(self):
+        return len(self.overlay_image_files) > 0
 
+    def getOverlayImageCount(self):
+        return len(self.overlay_image_files)
 
+    def getRelativeOverlayPhotoRect(self, index:int) -> PhotoRect:
+        photo_rect = self.photo_rects[index]
+        overlay_rect = self.overlay_rects[index]
+        start_x = overlay_rect.start_x - photo_rect.start_x
+        end_x = start_x + overlay_rect.getWidth()
+        start_y = overlay_rect.start_y - photo_rect.start_y
+        end_y = start_y + overlay_rect.getHeight()
+
+        relative_photo_rect = PhotoRect(start_x, start_y, end_x, end_y)
+        return relative_photo_rect
+
+    def copy(self):
+        return FourCutData(self.photo, self.photo_rects)

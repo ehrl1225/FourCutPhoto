@@ -10,3 +10,5 @@ def qt_main():
     wg.show()
     sys.exit(app.exec())
 
+if __name__ == '__main__':
+    qt_main()

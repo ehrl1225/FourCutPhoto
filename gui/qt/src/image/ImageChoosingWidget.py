@@ -68,18 +68,18 @@ class ImageChoosingWidget(QWidget):
         self.go_next.emit()
 
     def setImages(self):
-        image_paths = self.data_manager.getPhotoPaths()
+        images = self.data_manager.images
         self.image_labels = []
         self.overlay_labels = []
 
-        for i, image_path in enumerate(image_paths):
+        for i, image in enumerate(images):
             # Create a container widget for the image and overlay
             container = QWidget(self)
             container_layout = QStackedLayout(container)
 
             # Create the image label
             image_label = QLabel(container)
-            pixmap = QPixmap(image_path)
+            pixmap = self.image_util.cv2QPixmap(image)
             image_label.setPixmap(pixmap.scaled(300, 300, Qt.AspectRatioMode.KeepAspectRatio))
             image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             # image_label.setStyleSheet("""

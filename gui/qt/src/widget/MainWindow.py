@@ -1,5 +1,5 @@
 from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtGui import QKeyEvent, QAction
+from PyQt6.QtGui import QKeyEvent
 from PyQt6.QtWidgets import QMainWindow
 
 from gui.qt.src.common.CommonObject import CommonObject

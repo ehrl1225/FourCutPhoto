@@ -19,7 +19,7 @@ class ImagePrintingDoneWidget(CommonWidget):
 
         self.go_next_btn = QPushButton(self)
         self.go_next_btn.setStyleSheet("""
-        background-color : black;
+        background-color : transparent;
         """)
 
         background_pixmap = QPixmap("./gui/qt/img/printing_done_img.png")
@@ -39,7 +39,7 @@ class ImagePrintingDoneWidget(CommonWidget):
         self.setUI()
 
     def setUI(self):
-        self.go_next_btn.setGeometry(1100, 400, 350, 100)
+        self.go_next_btn.setGeometry(700, 550, 280, 180)
         self.go_next_btn.clicked.connect(self.goNext)
 
 

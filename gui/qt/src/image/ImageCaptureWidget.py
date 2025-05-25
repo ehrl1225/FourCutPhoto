@@ -1,15 +1,19 @@
 from PIL.ImageQt import QPixmap
-from PyQt6.QtCore import QTimer, pyqtSlot, Qt, pyqtSignal
+from PyQt6.QtCore import QTimer, pyqtSlot, Qt, pyqtSignal, QUrl
 from PyQt6.QtGui import QImage, QKeyEvent
+from PyQt6.QtMultimedia import QSoundEffect
 from PyQt6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QFrame, QHBoxLayout
 
+from gui.qt.src.common import CommonWidget
 from gui.qt.src.common.CommonObject import CommonObject
 from gui.qt.src.worker.ImageCaptureWorker import ImageCaptureWorker
 from src.main.client import Client
 import os
+import time
 
+photo_shoot_sound_url = "./gui/qt/sound/photo_shoot.wav"
 
-class ImageCaptureWidget(QWidget):
+class ImageCaptureWidget(CommonWidget):
     go_next = pyqtSignal()
 
     def __init__(self, parent:CommonObject=None):
@@ -21,27 +25,32 @@ class ImageCaptureWidget(QWidget):
 
     def initUI(self):
         self.state_lb = QLabel("대기 중", self)
-        self.count_lb = QLabel("0/6", self)
+        self.state_lb.resize(100, 50)
+        self.count_lb = QLabel(f"0/{self.data_manager.getPhotoCount()}", self)
         self.photo_img_lb = QLabel(self)
         pixmap = QPixmap("gui/qt/img/take_photo_start.png")
-        pixmap = pixmap.scaled(300,600, Qt.AspectRatioMode.KeepAspectRatio)
+        pixmap = pixmap.scaled(1200, 900, Qt.AspectRatioMode.KeepAspectRatio)
         self.photo_img_lb.setPixmap(pixmap)
+        self.photo_img_lb.setGeometry(200, 0, 1200, 900)
         self.count_lb.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.state_lb.setStyleSheet("""background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-size: 20px;""")
         self.state_lb.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.count_lb.setStyleSheet("font-size: 20px;")
         self.image_lb = QLabel(self)
-        self.image_lb.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.image_lb.setAlignment(Qt.AlignmentFlag.AlignRight)
+        self.soundEffect = QSoundEffect()
+        self.soundEffect.setSource(QUrl.fromLocalFile(photo_shoot_sound_url))
+        self.soundEffect.setLoopCount(1)
 
         vbox = QVBoxLayout()
         vbox.addWidget(self.state_lb,1)
         vbox.addWidget(self.count_lb,1)
-        vbox.addWidget(self.photo_img_lb,7)
+        vbox.addStretch(7)
 
         hbox = QHBoxLayout()
         hbox.addLayout(vbox)
-        hbox.addWidget(self.image_lb,9)
+        hbox.addWidget(self.image_lb,6)
 
         self.setLayout(hbox)
         self.setUI()
@@ -56,15 +65,21 @@ class ImageCaptureWidget(QWidget):
         self.image_worker.start()
 
     def startCapture(self):
+        self.image_worker.setFourCutData(self.data_manager.getSelectedFrame())
+        if self.data_manager.getSelectedFrame().hasOverlayImages():
+            self.image_worker.setCurrentOverlayIndex(0)
+        else:
+            self.image_worker.setCurrentOverlayIndex(-1)
+        self.count_lb.setText(f"0/{self.data_manager.getPhotoCount()}")
+        self.image_count = 0
         self.image_worker.go = True
         self.data_manager.makePhotoDirectory()
         # self.image_worker.start()
 
     def endCapture(self):
         self.state_lb.setText("대기 중")
-        self.count_lb.setText("0/6")
+        self.count_lb.setText(f"0/{self.data_manager.getPhotoCount()}")
         self.image_lb.clear()
-        self.image_count = 0
         # self.image_worker.stop()
 
     def countDownStart(self):
@@ -77,15 +92,23 @@ class ImageCaptureWidget(QWidget):
         self.image_worker.saveImage(image_path)
 
     def countDown(self):
+        photo_count = self.data_manager.getPhotoCount()
         if self.count == 0:
             self.state_lb.setText("찰칵")
             self.image_count +=1
-            self.count_lb.setText(f"{self.image_count}/6")
+            self.count_lb.setText(f"{self.image_count}/{photo_count}")
             self.count = 5
+            self.soundEffect.play()
             self.saveImage()
-            if self.image_count == 6:
+            if self.image_count == photo_count:
                 self.timer.stop()
+                time.sleep(1)
                 self.go_next.emit()
+                return
+            if self.data_manager.getSelectedFrame().hasOverlayImages():
+                self.image_worker.setCurrentOverlayIndex(self.image_count)
+            else:
+                self.image_worker
             return
         self.state_lb.setText(f"{self.count}초")
         self.count -= 1

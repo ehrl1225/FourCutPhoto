@@ -37,6 +37,9 @@ class ImageCapture:
     def save_image(self, image_path:str, image:np.ndarray):
         cv2.imwrite(image_path, image)
 
+    def save_video(self, video_path:str, video:cv2.VideoWriter):
+        pass
+
     def showCapture(self):
         self.displayCapture = True
         while cv2.waitKey(1) != ord('q'):
