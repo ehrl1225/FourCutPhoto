@@ -118,10 +118,11 @@ class DataManager:
         image_path = os.path.join(DataManager.base_path, DataManager.image_path)
         json_path = os.path.join(DataManager.base_path, DataManager.json_path)
         overlay_path = os.path.join(DataManager.base_path, DataManager.overlay_path)
-        four_cut_images = os.listdir(image_path)
+
         four_cut_datas:list[FourCutData] = list()
 
-        for image in four_cut_images:
+        for imageindex in range(1,7):
+            image = f"frame{imageindex}.jpg"
             img = cv2.imread(os.path.join(image_path, image))
 
             img_name = os.path.splitext(image)[0]
