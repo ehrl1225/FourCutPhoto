@@ -27,6 +27,7 @@ END_X = "end_x"
 END_Y = "end_y"
 IMAGE_RECT = "image_rect"
 OVERLAY_RECT = "overlay_rect"
+OVERLAY_ON_CAM = "overlay_on_cam"
 IMAGE_FILE = "image_file"
 TEST_MODE = False
 DEFAULT_PHOTO_COUNT = 6
@@ -135,6 +136,7 @@ class DataManager:
             photo_rects: list[PhotoRect] = []
             overlay_rects: list[PhotoRect] = []
             overlay_files: list[str] = []
+            overlay_on_cam:bool = False
             for photoRect in data[IMAGE_RECT]:
                 start_x = photoRect[START_X]
                 start_y = photoRect[START_Y]
@@ -142,7 +144,8 @@ class DataManager:
                 end_y = photoRect[END_Y]
                 photo_rect = PhotoRect(start_x, start_y, end_x, end_y)
                 photo_rects.append(photo_rect)
-
+            if OVERLAY_ON_CAM in data:
+                overlay_on_cam = data[OVERLAY_ON_CAM]
             if OVERLAY_RECT in data:
                 for overlayRect in data[OVERLAY_RECT]:
                     file_name = overlayRect[IMAGE_FILE]

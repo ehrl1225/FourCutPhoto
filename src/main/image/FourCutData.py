@@ -12,6 +12,7 @@ class FourCutData:
     overlay_rects:list[PhotoRect]
     overlay_images:list[np.ndarray]
     overlay_image_files:list[str]
+    overlay_on_cam:bool = False
 
     def __init__(self,photo:ndarray, photo_rects:list[PhotoRect]):
         self.photo = photo
@@ -31,6 +32,9 @@ class FourCutData:
 
     def hasOverlayImages(self):
         return len(self.overlay_image_files) > 0
+
+    def overlayOnCam(self):
+        return self.overlay_on_cam
 
     def getOverlayImageCount(self):
         return len(self.overlay_image_files)

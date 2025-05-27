@@ -1,6 +1,5 @@
 from PyQt6.QtCore import pyqtSlot, Qt, pyqtSignal
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QPushButton, QGridLayout, QStackedLayout
-from PyQt6.QtGui import QPixmap
 
 from gui.qt.src.common.CommonObject import CommonObject
 from src.main.image import ImageEditor, ImageUtil
@@ -12,7 +11,7 @@ class ImageChoosingWidget(QWidget):
         super().__init__()
         self.parent = parent
         self.data_manager = parent.data_manager
-        self.selected_images = []  # Stores selected images and their order
+        self.selected_images:list[int] = []  # Stores selected images and their order
         self.initUI()
 
     def initUI(self):
@@ -54,17 +53,18 @@ class ImageChoosingWidget(QWidget):
         self.done_btn.pressed.connect(self.setSelectedImages)
 
     def setSelectedImages(self):
+        if len(self.selected_images) != 4:
+            return
         selected_frame = self.data_manager.getSelectedFrameIndex()
-        four_cut_datas = self.data_manager.getFourCutDatas()[selected_frame]
+        four_cut_data = self.data_manager.getFourCutDatas()[selected_frame]
         images = self.data_manager.getImages()
         selected_images = [images[i] for i in self.selected_images]
-        edited_image = self.image_editor.editImage(four_cut_data=four_cut_datas, photos=selected_images)
+        edited_image = self.image_editor.editImage(four_cut_data=four_cut_data, photos=selected_images)
         self.data_manager.saveImageDestination(edited_image)
         self.data_manager.setEditedImage(edited_image)
         self.selected_images.clear()
         for overlay in self.overlay_labels:
             overlay.setVisible(False)
-
         self.go_next.emit()
 
     def setImages(self):

@@ -43,13 +43,26 @@ class ImageShowWidget(CommonImageWidget):
         self.go_next_btn.pressed.connect(self.goNext)
 
     def setImages(self):
-        images = self.data_manager.getPhotoPaths()
+        images = self.data_manager.getImages()
         self.image_labels = []
-
-        for i, image_path in enumerate(images):
+        four_cut_data = self.data_manager.getSelectedFrame()
+        for i, image in enumerate(images):
+            canvas = image.copy()
+            overlay_img = four_cut_data.overlay_images[i]
+            four_cut_photo_rect = four_cut_data.photo_rects[i].copy()
+            overlay_relative_photo_rect = four_cut_data.getRelativeOverlayPhotoRect(i)
+            sized_up_ratio = self.image_editor.getSizeRatio(canvas, four_cut_photo_rect)
+            overlay_relative_photo_rect.multiply(sized_up_ratio)
+            canvas = self.image_editor.cutWithRatio(canvas, four_cut_photo_rect)
+            width = overlay_relative_photo_rect.getWidth()
+            height = overlay_relative_photo_rect.getHeight()
+            fixed_size_overlay_img = self.image_editor.resizeWithRatio(overlay_img, width, height)
+            cut_image = self.image_editor.cutOverSize(fixed_size_overlay_img, width, height)
+            print(width, height)
+            self.image_editor.overwriteImage(canvas, cut_image, overlay_relative_photo_rect)
+            edited_pixmap = self.image_util.cv2QPixmap(canvas)
             image_label = QLabel(self)
-            pixmap = QPixmap(image_path).scaled(300, 300, Qt.AspectRatioMode.KeepAspectRatio)
-            image_label.setPixmap(pixmap)
+            image_label.setPixmap(edited_pixmap)
             image_label.resize(300, 300)
             image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.grid_layout.addWidget(image_label, i//2, i%2)
@@ -60,7 +73,6 @@ class ImageShowWidget(CommonImageWidget):
         edited_image = self.image_editor.editImage(four_cut_data=selected_frame, photos=images)
         self.data_manager.saveImageDestination(edited_image)
         self.data_manager.setEditedImage(edited_image)
-
 
 
     def goNext(self):

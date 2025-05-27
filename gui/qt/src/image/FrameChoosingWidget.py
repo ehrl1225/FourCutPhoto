@@ -1,7 +1,8 @@
 from functools import partial
 
 from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QButtonGroup, QRadioButton
+from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QButtonGroup, QRadioButton, \
+    QGridLayout
 from PyQt6.QtGui import QPixmap, QImage
 
 from gui.qt.src.common.CommonObject import CommonObject
@@ -24,12 +25,13 @@ class FrameChoosingWidget(QWidget):
         # Create a horizontal layout to hold the images and radio buttons
         image_layout = QHBoxLayout()
 
+
         # Button group to manage radio buttons
         self.image_lb_list = list()
 
         self.button_group = QButtonGroup()
 
-        for i in range(3):
+        for i in range(6):
             # Create a vertical layout for each image and its radio button
             vbox = QVBoxLayout()
 
@@ -75,7 +77,7 @@ class FrameChoosingWidget(QWidget):
     def setImages(self):
         four_cut_datas = self.data_manager.getFourCutDatas()
         width = 200
-        height = 500
+        height = 340
         for index, four_cut_data in enumerate(four_cut_datas):
             if four_cut_data.hasOverlayImages():
                 photo = self.image_editor.editOverlayImage(four_cut_data, four_cut_data.photo)

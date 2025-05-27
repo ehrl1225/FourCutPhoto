@@ -72,6 +72,12 @@ class ImageCaptureWorker(QThread):
         return np.flip(img, 1)
 
     def __editOverlay(self, img:np.ndarray):
+        """
+        send image must be edited image
+        and save image must be raw image
+        :param img:
+        :return:
+        """
         canvas = img.copy()
         overlay_img = self.four_cut_data.overlay_images[self.current_overlay_index]
         four_cut_photo_rect = self.four_cut_data.photo_rects[self.current_overlay_index].copy()
@@ -84,12 +90,18 @@ class ImageCaptureWorker(QThread):
         height = overlay_relative_photo_rect.getHeight()
         fixed_size_overlay_img = self.image_editor.resizeWithRatio(edited_overly_img, width, height)
         cut_image = self.image_editor.cutOverSize(fixed_size_overlay_img, width, height)
-        if self.save_image:
-            self.__saveImage(self.imageCapture, canvas)
         self.image_editor.overwriteImage(canvas, cut_image, overlay_relative_photo_rect)
-        qt_image = self.image_util.cv2QImage(canvas)
-        self.imageCaptured.emit(qt_image)
         return canvas
+
+    def __editFrame(self, img:np.ndarray):
+        canvas = img.copy()
+        index = self.current_frame_image_index
+        if index > 3:
+            index = 3
+        four_cut_photo_rect = self.four_cut_data.photo_rects[index].copy()
+        canvas = self.image_editor.cutWithRatio(canvas, four_cut_photo_rect)
+        return canvas
+
 
     def stop(self):
         self.go = False
@@ -103,13 +115,12 @@ class ImageCaptureWorker(QThread):
             if FLIP_HORIZONTAL:
                 img = self.__flipImage(img)
             if self.current_overlay_index != NO_OVERLAY:
-                img = self.__editOverlay(img)
-                continue
-            if self.current_frame_image_index != NO_FRAME_IMAGE:
-                four_cut_photo_rect = self.four_cut_data.photo_rects[self.current_overlay_index]
-                img = self.image_editor.cutWithRatio(img,four_cut_photo_rect)
-
-            qt_image = self.image_util.cv2QImage(img)
+                send_img = self.__editOverlay(img)
+            elif self.current_frame_image_index != NO_FRAME_IMAGE:
+                send_img = self.__editFrame(img)
+            else:
+                send_img = img
+            qt_image = self.image_util.cv2QImage(send_img)
             self.imageCaptured.emit(qt_image)
             if self.save_image:
                 self.__saveImage(self.imageCapture, img)

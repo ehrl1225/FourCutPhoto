@@ -27,11 +27,11 @@ class ImageCaptureWidget(CommonWidget):
         self.state_lb = QLabel("대기 중", self)
         self.state_lb.resize(100, 50)
         self.count_lb = QLabel(f"0/{self.data_manager.getPhotoCount()}", self)
-        self.photo_img_lb = QLabel(self)
-        pixmap = QPixmap("gui/qt/img/take_photo_start.png")
-        pixmap = pixmap.scaled(1200, 900, Qt.AspectRatioMode.KeepAspectRatio)
-        self.photo_img_lb.setPixmap(pixmap)
-        self.photo_img_lb.setGeometry(200, 0, 1200, 900)
+        # self.photo_img_lb = QLabel(self)
+        # pixmap = QPixmap("gui/qt/img/take_photo_start.png")
+        # pixmap = pixmap.scaled(1200, 900, Qt.AspectRatioMode.KeepAspectRatio)
+        # self.photo_img_lb.setPixmap(pixmap)
+        # self.photo_img_lb.setGeometry(200, 0, 1200, 900)
         self.count_lb.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.state_lb.setStyleSheet("""background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-size: 20px;""")
@@ -70,6 +70,7 @@ class ImageCaptureWidget(CommonWidget):
             self.image_worker.setCurrentOverlayIndex(0)
         else:
             self.image_worker.setCurrentOverlayIndex(-1)
+            self.image_worker.setCurrentFrameImageIndex(0)
         self.count_lb.setText(f"0/{self.data_manager.getPhotoCount()}")
         self.image_count = 0
         self.image_worker.go = True
@@ -108,7 +109,7 @@ class ImageCaptureWidget(CommonWidget):
             if self.data_manager.getSelectedFrame().hasOverlayImages():
                 self.image_worker.setCurrentOverlayIndex(self.image_count)
             else:
-                self.image_worker
+                self.image_worker.setCurrentFrameImageIndex(self.image_count)
             return
         self.state_lb.setText(f"{self.count}초")
         self.count -= 1

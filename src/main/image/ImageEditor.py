@@ -113,7 +113,6 @@ class ImageEditor:
         end_y = photo_rect.end_y
         start_x = photo_rect.start_x
         end_x = photo_rect.end_x
-
         # Check if the photo has an alpha channel
         if photo.shape[2] == 4:  # RGBA image
             alpha_channel = photo[:, :, 3] / 255.0  # Normalize alpha to range [0, 1]

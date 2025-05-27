@@ -49,7 +49,6 @@ class ImageWidget(CommonWidget):
         self.setUI()
 
     def setUI(self):
-        self.printer = Printer()
 
         self.data_manager.loadFourCutDatas()
         self.frame_choosing_wg.setImages()
@@ -61,10 +60,13 @@ class ImageWidget(CommonWidget):
         self.image_printing_wg.go_next.connect(self.toImagePrintingDoneWidget)
         self.image_printing_done_wg.go_next.connect(self.toFrameChoosingWidget)
 
-        # self.data_manager.setSelectedFrameIndex(0)
+        # self.data_manager.setSelectedFrameIndex(2)
         # self.toImageCaptureWidget()
-        # self.data_manager.setPhotoDirectory("61e0df235a959939eacc")
+        # self.data_manager.setPhotoDirectory("728d9c224257a05ebe09")
         # self.toImageChoosingWidget()
+        # for i in range(4):
+        #     self.image_choosing_wg.select_image(i)
+        # self.image_choosing_wg.setSelectedImages()
         # self.toPrintingWidget()
         # self.toImagePrintingDoneWidget()
 
@@ -108,6 +110,7 @@ class ImageWidget(CommonWidget):
     def toFrameChoosingWidget(self):
         self.hideWidget(self.current_wg)
         self.showWidget(self.frame_choosing_wg)
+        self.frame_choosing_wg.setImages()
         self.done_service.emit()
 
     def toImageChoosingWidget(self):
