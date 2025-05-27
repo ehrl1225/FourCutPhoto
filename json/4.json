@@ -1,0 +1,59 @@
+{
+  "image_rect" : [
+    {
+      "start_x" : 86,
+      "start_y" : 370,
+      "end_x" : 522,
+      "end_y" : 895
+    },
+    {
+      "start_x" : 86,
+      "start_y" : 920,
+      "end_x" : 522,
+      "end_y" : 1444
+    },
+    {
+      "start_x" : 558,
+      "start_y" : 104,
+      "end_x" : 995,
+      "end_y" : 628
+    },
+    {
+      "start_x" : 558,
+      "start_y" : 653,
+      "end_x" : 994,
+      "end_y" : 1178
+    }
+  ],
+  "overlay_on_cam": false,
+  "overlay_rect" : [
+    {
+      "image_file" : "1.png",
+      "start_x" : 81,
+      "start_y" : 122,
+      "end_x" : 542,
+      "end_y" : 413
+    },
+    {
+      "image_file" : "2.png",
+      "start_x" : 815,
+      "start_y" : 62,
+      "end_x" : 1023,
+      "end_y" : 165
+    },
+    {
+      "image_file" : "3.png",
+      "start_x" : 694,
+      "start_y" : 3,
+      "end_x" : 878,
+      "end_y" : 178
+    },
+    {
+      "image_file" : "4.png",
+      "start_x" : 491,
+      "start_y" : 1326,
+      "end_x" : 704,
+      "end_y" : 1472
+    }
+  ]
+}

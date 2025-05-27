@@ -14,7 +14,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-
+            "FourCutPhoto = FourCutPhoto.gui.qt.src:qt_main"
         ]
     }
 )
