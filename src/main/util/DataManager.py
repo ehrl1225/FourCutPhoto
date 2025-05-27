@@ -45,6 +45,7 @@ class DataManager:
     photo_save_dir_name:str
     photo_save_dir_path:str
     images:list[np.ndarray] = list()
+    show_images:list[np.ndarray] = list()
     four_cut_datas : list[FourCutData] = list()
     people_count : int = 1
     selected_frame_index: int = 0
@@ -56,6 +57,15 @@ class DataManager:
 
     def appendImage(self, image:np.ndarray):
         self.images.append(image)
+
+    def appendShowImage(self, image:np.ndarray):
+        self.show_images.append(image)
+
+    def getShowImages(self):
+        return self.show_images
+
+    def clearShowImages(self):
+        self.show_images.clear()
 
     def getSelectedFrame(self):
         return self.four_cut_datas[self.selected_frame_index]
@@ -72,7 +82,7 @@ class DataManager:
     def setSelectedFrameIndex(self, selected_frame_index):
         self.selected_frame_index = selected_frame_index
         four_cut_data = self.four_cut_datas[self.selected_frame_index]
-        if four_cut_data.hasOverlayImages():
+        if four_cut_data.overlayOnCam():
             self.photo_count = four_cut_data.getOverlayImageCount()
         else:
             self.photo_count = DEFAULT_PHOTO_COUNT
@@ -159,6 +169,7 @@ class DataManager:
         four_cut_data = FourCutData(photo, photo_rects)
         four_cut_data.setOverlayImageFiles(overlay_files)
         four_cut_data.setOverlayRects(overlay_rects)
+        four_cut_data.setOverlayOnCam(overlay_on_cam)
 
         return four_cut_data
 

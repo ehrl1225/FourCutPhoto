@@ -33,7 +33,7 @@ class ImagePrintingWidget(QWidget):
         height = screen_size.height()
 
         for pixmap_index, pixmap in enumerate(self.printer_pixmaps):
-            pixmap = pixmap.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio)
+            pixmap = pixmap.scaled(width-30, height-30, Qt.AspectRatioMode.KeepAspectRatio)
             self.printer_pixmaps[pixmap_index] = pixmap
 
         self.background_label.setPixmap(self.printer_pixmaps[0])

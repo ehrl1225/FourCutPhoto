@@ -18,6 +18,9 @@ class FourCutData:
         self.photo = photo
         self.photo_rects = photo_rects
 
+    def setOverlayOnCam(self, overlay_on_cam:bool):
+        self.overlay_on_cam = overlay_on_cam
+
     def setOverlayRects(self, overlay_rects:list[PhotoRect]):
         self.overlay_rects = overlay_rects
 

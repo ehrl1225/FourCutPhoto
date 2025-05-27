@@ -45,7 +45,7 @@ class ImageCaptureWorker(QThread):
 
     def setFourCutData(self, four_cut_data:FourCutData):
         self.four_cut_data = four_cut_data
-        if self.four_cut_data.hasOverlayImages():
+        if self.four_cut_data.overlayOnCam():
             self.current_overlay_index = 0
 
     def setCurrentOverlayIndex(self, overlay_index:int):
@@ -123,6 +123,7 @@ class ImageCaptureWorker(QThread):
             qt_image = self.image_util.cv2QImage(send_img)
             self.imageCaptured.emit(qt_image)
             if self.save_image:
+                self.data_manager.appendShowImage(send_img)
                 self.__saveImage(self.imageCapture, img)
         self.imageCapture.closeCamera()
 

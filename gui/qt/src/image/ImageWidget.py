@@ -81,7 +81,7 @@ class ImageWidget(CommonWidget):
     def capturedImages(self):
         frame = self.data_manager.getSelectedFrame()
         self.image_capture_wg.endCapture()
-        if frame.hasOverlayImages():
+        if frame.overlayOnCam():
             self.toImageShowWidget()
         else:
             self.toImageChoosingWidget()

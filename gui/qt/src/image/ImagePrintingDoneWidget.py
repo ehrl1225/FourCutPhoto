@@ -27,7 +27,7 @@ class ImagePrintingDoneWidget(CommonWidget):
         screen_size = self.screen().size()
         width = screen_size.width()
         height = screen_size.height()
-        background_pixmap = background_pixmap.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio)
+        background_pixmap = background_pixmap.scaled(width-30, height-30, Qt.AspectRatioMode.KeepAspectRatio)
 
         self.background_lb.setPixmap(background_pixmap)
 

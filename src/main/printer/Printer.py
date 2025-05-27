@@ -17,7 +17,7 @@ class Printer:
 
     def print_image(self, image_path, copies=1):
         """
-        Print the image to fit the entire A4 page, with a specified number of copies.
+        Print the image to fit a 4x6 inch page, with a specified number of copies.
         
         :param image_path: Path to the image file.
         :param copies: Number of copies to print.
@@ -25,11 +25,11 @@ class Printer:
         # Open the image file
         image = Image.open(image_path)
 
-        # A4 size in pixels at 300 DPI (standard print resolution)
-        a4_width, a4_height = 2480, 3508  # 8.27 x 11.69 inches at 300 DPI
+        # 4x6 inch size in pixels at 300 DPI (standard print resolution)
+        width_4x6, height_4x6 = 1200, 1800  # 4 x 6 inches at 300 DPI
 
-        # Resize the image to fit A4 size while maintaining aspect ratio
-        image = image.resize((a4_width, a4_height), Image.ANTIALIAS)
+        # Resize the image to fit 4x6 size while maintaining aspect ratio
+        image = image.resize((width_4x6, height_4x6), Image.ANTIALIAS)
 
         # Get the printer device context
         hdc = win32ui.CreateDC()
@@ -44,7 +44,7 @@ class Printer:
 
             # Convert the image to a DIB and draw it
             dib = ImageWin.Dib(image)
-            dib.draw(hdc.GetHandleOutput(), (0, 0, a4_width, a4_height))
+            dib.draw(hdc.GetHandleOutput(), (0, 0, width_4x6, height_4x6))
 
             # End the current page
             hdc.EndPage()

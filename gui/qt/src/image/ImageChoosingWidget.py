@@ -60,15 +60,18 @@ class ImageChoosingWidget(QWidget):
         images = self.data_manager.getImages()
         selected_images = [images[i] for i in self.selected_images]
         edited_image = self.image_editor.editImage(four_cut_data=four_cut_data, photos=selected_images)
+        if four_cut_data.hasOverlayImages():
+            edited_image = self.image_editor.editOverlayImage(four_cut_data, edited_image)
         self.data_manager.saveImageDestination(edited_image)
         self.data_manager.setEditedImage(edited_image)
         self.selected_images.clear()
+        self.data_manager.clearShowImages()
         for overlay in self.overlay_labels:
             overlay.setVisible(False)
         self.go_next.emit()
 
     def setImages(self):
-        images = self.data_manager.images
+        images = self.data_manager.getShowImages()
         self.image_labels = []
         self.overlay_labels = []
 

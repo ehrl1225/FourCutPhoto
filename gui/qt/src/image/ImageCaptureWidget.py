@@ -25,8 +25,9 @@ class ImageCaptureWidget(CommonWidget):
 
     def initUI(self):
         self.state_lb = QLabel("대기 중", self)
-        self.state_lb.resize(100, 50)
+        self.state_lb.setGeometry(30, 30, 100, 50)
         self.count_lb = QLabel(f"0/{self.data_manager.getPhotoCount()}", self)
+        self.count_lb.setGeometry(30, 130, 100, 50)
         # self.photo_img_lb = QLabel(self)
         # pixmap = QPixmap("gui/qt/img/take_photo_start.png")
         # pixmap = pixmap.scaled(1200, 900, Qt.AspectRatioMode.KeepAspectRatio)
@@ -38,7 +39,7 @@ class ImageCaptureWidget(CommonWidget):
         self.state_lb.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.count_lb.setStyleSheet("font-size: 20px;")
         self.image_lb = QLabel(self)
-        self.image_lb.setAlignment(Qt.AlignmentFlag.AlignRight)
+        self.image_lb.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.soundEffect = QSoundEffect()
         self.soundEffect.setSource(QUrl.fromLocalFile(photo_shoot_sound_url))
         self.soundEffect.setLoopCount(1)
@@ -49,7 +50,6 @@ class ImageCaptureWidget(CommonWidget):
         vbox.addStretch(7)
 
         hbox = QHBoxLayout()
-        hbox.addLayout(vbox)
         hbox.addWidget(self.image_lb,6)
 
         self.setLayout(hbox)
@@ -66,7 +66,7 @@ class ImageCaptureWidget(CommonWidget):
 
     def startCapture(self):
         self.image_worker.setFourCutData(self.data_manager.getSelectedFrame())
-        if self.data_manager.getSelectedFrame().hasOverlayImages():
+        if self.data_manager.getSelectedFrame().overlayOnCam():
             self.image_worker.setCurrentOverlayIndex(0)
         else:
             self.image_worker.setCurrentOverlayIndex(-1)
@@ -106,7 +106,7 @@ class ImageCaptureWidget(CommonWidget):
                 time.sleep(1)
                 self.go_next.emit()
                 return
-            if self.data_manager.getSelectedFrame().hasOverlayImages():
+            if self.data_manager.getSelectedFrame().overlayOnCam():
                 self.image_worker.setCurrentOverlayIndex(self.image_count)
             else:
                 self.image_worker.setCurrentFrameImageIndex(self.image_count)
