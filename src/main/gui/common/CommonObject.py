@@ -1,4 +1,4 @@
-from src.main.util import DataManager
+from util import DataManager
 
 
 class CommonObject:

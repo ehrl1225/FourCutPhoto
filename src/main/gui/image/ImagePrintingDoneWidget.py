@@ -2,7 +2,7 @@ from PyQt6.QtCore import pyqtSignal, Qt
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QLabel, QVBoxLayout, QPushButton
 
-from gui.qt.src.common.CommonWidget import CommonWidget
+from gui.common import CommonWidget
 
 
 class ImagePrintingDoneWidget(CommonWidget):
@@ -22,7 +22,7 @@ class ImagePrintingDoneWidget(CommonWidget):
         background-color : transparent;
         """)
 
-        background_pixmap = QPixmap("./gui/qt/img/printing_done_img.png")
+        background_pixmap = QPixmap("./gui/img/printing_done_img.png")
 
         screen_size = self.screen().size()
         width = screen_size.width()

@@ -10,11 +10,11 @@ setup(
     include_requires=[
         "PyQt6",
         "opencv-python",
-        "numpy"
+        "pillow",
     ],
     entry_points={
         'console_scripts': [
-            "FourCutPhoto = FourCutPhoto.gui.qt.src:qt_main"
+            "FourCutPhoto=FourCutPhoto.src.main:qt_main"
         ]
     }
 )

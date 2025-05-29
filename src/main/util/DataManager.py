@@ -4,8 +4,8 @@ import sys
 import cv2
 from PyQt6.QtGui import QImage
 
-from src.main.image.FourCutData import FourCutData
-from src.main.image.PhotoRect import PhotoRect
+from image.FourCutData import FourCutData
+from image.PhotoRect import PhotoRect
 import json
 import numpy as np
 import datetime

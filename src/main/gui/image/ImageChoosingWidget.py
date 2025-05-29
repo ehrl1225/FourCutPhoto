@@ -1,8 +1,8 @@
-from PyQt6.QtCore import pyqtSlot, Qt, pyqtSignal
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QPushButton, QGridLayout, QStackedLayout
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QGridLayout, QStackedLayout
 
-from gui.qt.src.common.CommonObject import CommonObject
-from src.main.image import ImageEditor, ImageUtil
+from gui.common import CommonObject
+from image import ImageEditor, ImageUtil
 
 class ImageChoosingWidget(QWidget):
     go_next = pyqtSignal()

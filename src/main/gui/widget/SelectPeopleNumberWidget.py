@@ -2,8 +2,7 @@ from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QHBoxLayout, QLabel, QPushButton
 from PyQt6.QtCore import Qt, pyqtSignal
 
-from gui.qt.src.common.CommonWidget import CommonWidget
-from src.main.util import DataManager
+from gui.common import CommonWidget
 
 
 class SelectPeopleNumberWidget(CommonWidget):
@@ -18,7 +17,7 @@ class SelectPeopleNumberWidget(CommonWidget):
         self.people_count = 1  # Default number of people
 
         self.background_label = QLabel(self)
-        pixmap = QPixmap("gui/qt/img/select_img.png")
+        pixmap = QPixmap("gui/img/select_img.png")
         screen_size = self.screen().size()
         width = screen_size.width()
         height = screen_size.height()

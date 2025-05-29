@@ -7,7 +7,7 @@ import numpy as np
 class ImageCapture:
     displayCapture:bool = False
     cam_not_found = False
-    cam_id:int = 0
+    cam_id:int = 1
 
     def __init__(self):
         pass

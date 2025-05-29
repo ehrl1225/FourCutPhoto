@@ -1,10 +1,8 @@
-import cv2
 from PyQt6.QtGui import QImage, QKeyEvent
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton
+from PyQt6.QtWidgets import QWidget, QVBoxLayout
 from PyQt6.QtCore import pyqtSlot, pyqtSignal
 
-from src.main.printer.Printer import Printer
-from src.main.util import DataManager
+from util import DataManager
 from .ImageCaptureWidget import ImageCaptureWidget
 from .ImageChoosingWidget import ImageChoosingWidget
 from .ImagePrintingDoneWidget import ImagePrintingDoneWidget
@@ -13,7 +11,7 @@ from .FrameChoosingWidget import FrameChoosingWidget
 from enum import Enum
 
 from .ImageShowWidget import ImageShowWidget
-from gui.qt.src.common.CommonWidget import CommonWidget
+from gui.common import CommonWidget
 
 
 class ImageState(Enum):

@@ -1,9 +1,9 @@
 from PyQt6.QtCore import pyqtSignal, Qt
 from PyQt6.QtWidgets import QVBoxLayout, QGridLayout, QHBoxLayout, QPushButton, QLabel
 
-from gui.qt.src.common import CommonImageWidget, CommonWidget
-from src.main.image import ImageUtil, ImageEditor
-from src.main.util import DataManager
+from gui.common import CommonImageWidget, CommonWidget
+from image import ImageUtil, ImageEditor
+from util import DataManager
 
 
 class ImageShowWidget(CommonImageWidget):

@@ -4,10 +4,9 @@ import numpy as np
 from PyQt6.QtCore import QThread, pyqtSignal
 from PyQt6.QtGui import QImage
 
-from gui.qt.src.common import CommonWidget
-from gui.qt.src.test.gui_test_util import printOnlyOnce
-from src.main.image import ImageCapture, ImageEditor, ImageUtil, FourCutData
-from src.main.util import DataManager
+from gui.common import CommonWidget
+from image import ImageCapture, ImageEditor, ImageUtil, FourCutData
+from util import DataManager
 
 NO_FRAME_IMAGE = -1
 NO_OVERLAY = -1

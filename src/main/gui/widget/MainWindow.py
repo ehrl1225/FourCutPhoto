@@ -2,10 +2,10 @@ from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QKeyEvent
 from PyQt6.QtWidgets import QMainWindow
 
-from gui.qt.src.common.CommonObject import CommonObject
-from gui.qt.src.widget.MainWidget import MainWidget
-from gui.qt.src.widget.SettingWidget import SettingWidget
-from src.main.util import DataManager
+from gui.common.CommonObject import CommonObject
+from gui.widget.MainWidget import MainWidget
+from gui.widget.SettingWidget import SettingWidget
+from util import DataManager
 
 TEST_MODE = False
 
@@ -21,7 +21,7 @@ class MainWindow(QMainWindow, CommonObject):
         self.wg = MainWidget(self)
         self.setting_wg = SettingWidget(self)
         self.setCentralWidget(self.wg)
-        self.showFullScreen()
+        # self.showFullScreen()
 
         self.setUI()
 

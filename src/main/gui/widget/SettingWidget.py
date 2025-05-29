@@ -1,7 +1,7 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSlider, QListWidget, QHBoxLayout, QComboBox, QPushButton
-from gui.qt.src.common.CommonObject import CommonObject
-from src.main.printer.Printer import Printer
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSlider, QHBoxLayout, QComboBox, QPushButton
+from gui.common.CommonObject import CommonObject
+from printer.Printer import Printer
 
 
 class SettingWidget(QWidget):

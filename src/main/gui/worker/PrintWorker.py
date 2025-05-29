@@ -1,5 +1,3 @@
-from functools import partial
-
 from PyQt6.QtCore import QThread, pyqtSignal
 from src.main.printer import Printer
 

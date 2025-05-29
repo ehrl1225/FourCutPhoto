@@ -1,6 +1,6 @@
 from PIL import Image, ImageWin
-# import win32print
-# import win32ui
+import win32print
+import win32ui
 
 class Printer:
     def __init__(self):

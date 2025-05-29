@@ -1,11 +1,9 @@
-from unittest import case
-
 from PyQt6.QtCore import pyqtSignal, Qt, QTimer
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QHBoxLayout
+from PyQt6.QtWidgets import QWidget, QLabel, QPushButton, QHBoxLayout
 
-from gui.qt.src.common.CommonObject import CommonObject
-from src.main.image import ImageUtil, ImageEditor
+from gui.common import CommonObject
+from image import ImageUtil, ImageEditor
 
 TOTAL_PRINTING_IMAGE_COUNT = 2
 
@@ -25,8 +23,8 @@ class ImagePrintingWidget(QWidget):
         # 테스트용 mac 환경에서는 print 못하는 상황이므로
         self.go_next_btn = QPushButton('go_next', self)
         self.printer_pixmaps = [
-            QPixmap("gui/qt/img/printing_img1.png"),
-            QPixmap("gui/qt/img/printing_img2.png"),
+            QPixmap("gui/img/printing_img1.png"),
+            QPixmap("gui/img/printing_img2.png"),
         ]
         screen_size = self.screen().size()
         width = screen_size.width()

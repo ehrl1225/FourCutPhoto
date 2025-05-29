@@ -2,16 +2,15 @@ from PIL.ImageQt import QPixmap
 from PyQt6.QtCore import QTimer, pyqtSlot, Qt, pyqtSignal, QUrl
 from PyQt6.QtGui import QImage, QKeyEvent
 from PyQt6.QtMultimedia import QSoundEffect
-from PyQt6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QFrame, QHBoxLayout
+from PyQt6.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout
 
-from gui.qt.src.common import CommonWidget
-from gui.qt.src.common.CommonObject import CommonObject
-from gui.qt.src.worker.ImageCaptureWorker import ImageCaptureWorker
-from src.main.client import Client
+from gui.common import CommonWidget
+from gui.common.CommonObject import CommonObject
+from gui.worker.ImageCaptureWorker import ImageCaptureWorker
 import os
 import time
 
-photo_shoot_sound_url = "./gui/qt/sound/photo_shoot.wav"
+photo_shoot_sound_url = "./gui/sound/photo_shoot.wav"
 
 class ImageCaptureWidget(CommonWidget):
     go_next = pyqtSignal()
@@ -61,7 +60,6 @@ class ImageCaptureWidget(CommonWidget):
 
         self.image_worker = ImageCaptureWorker(self)
         self.image_worker.imageCaptured.connect(self.setImage)
-        self.client = Client()
         self.image_worker.start()
 
     def startCapture(self):

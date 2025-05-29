@@ -14,7 +14,7 @@ class WelcomeWidget(QWidget):
         # self.welcome_label = QLabel("빛울림의 밤에 오신걸 환영합니다", self)
         # self.welcome_label.setStyleSheet("font-size: 24px; color: white;")
         self.background_label = QLabel(self)
-        pixmap = QPixmap("gui/qt/img/welcome_img.png")
+        pixmap = QPixmap("gui/img/welcome_img.png")
         screen_size = self.screen().size()
         width = screen_size.width()
         height = screen_size.height()
