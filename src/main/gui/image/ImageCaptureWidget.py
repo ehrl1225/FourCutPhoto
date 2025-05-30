@@ -7,13 +7,23 @@ from PyQt6.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout
 from gui.common import CommonWidget
 from gui.common.CommonObject import CommonObject
 from gui.worker.ImageCaptureWorker import ImageCaptureWorker
+from image import ImageCapture, ImageUtil, ImageEditor
+import numpy as np
 import os
 import time
 
 photo_shoot_sound_url = "./gui/sound/photo_shoot.wav"
 
+NO_FRAME_IMAGE = -1
+NO_OVERLAY = -1
+FLIP_HORIZONTAL = True
+
 class ImageCaptureWidget(CommonWidget):
     go_next = pyqtSignal()
+    current_frame_image_index: int = NO_FRAME_IMAGE
+    current_overlay_index: int = NO_OVERLAY
+    save_image_path: str = None
+    save_image = False
 
     def __init__(self, parent:CommonObject=None):
         super().__init__()
@@ -58,17 +68,23 @@ class ImageCaptureWidget(CommonWidget):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.countDown)
 
+        self.image_util = ImageUtil()
+
         self.image_worker = ImageCaptureWorker(self)
-        self.image_worker.imageCaptured.connect(self.setImage)
+        self.image_worker.setCallback(self.receiveImage)
+
         self.image_worker.start()
 
+        self.image_editor = ImageEditor()
+        self.image_util = ImageUtil()
+
+
     def startCapture(self):
-        self.image_worker.setFourCutData(self.data_manager.getSelectedFrame())
         if self.data_manager.getSelectedFrame().overlayOnCam():
-            self.image_worker.setCurrentOverlayIndex(0)
+            self.current_overlay_index = 0
         else:
-            self.image_worker.setCurrentOverlayIndex(-1)
-            self.image_worker.setCurrentFrameImageIndex(0)
+            self.current_overlay_index = -1
+            self.current_frame_image_index = 0
         self.count_lb.setText(f"0/{self.data_manager.getPhotoCount()}")
         self.image_count = 0
         self.image_worker.go = True
@@ -88,7 +104,8 @@ class ImageCaptureWidget(CommonWidget):
 
     def saveImage(self):
         image_path = os.path.join(self.data_manager.photo_save_dir_path, str(self.image_count) + ".png")
-        self.image_worker.saveImage(image_path)
+        self.save_image_path = image_path
+        self.save_image = True
 
     def countDown(self):
         photo_count = self.data_manager.getPhotoCount()
@@ -105,14 +122,81 @@ class ImageCaptureWidget(CommonWidget):
                 self.go_next.emit()
                 return
             if self.data_manager.getSelectedFrame().overlayOnCam():
-                self.image_worker.setCurrentOverlayIndex(self.image_count)
+                self.current_overlay_index = self.image_count
             else:
-                self.image_worker.setCurrentFrameImageIndex(self.image_count)
+                self.current_frame_image_index = self.image_count
             return
         self.state_lb.setText(f"{self.count}초")
         self.count -= 1
 
-    @pyqtSlot(QImage)
+    def __saveImage(self, img:np.ndarray):
+        self.image_util.saveImage(self.save_image_path, img)
+        self.data_manager.appendImage(img)
+        self.save_image = False
+        self.save_image_path = ""
+        self.data_manager.appendShowImage(img)
+
+    def __saveVideo(self, imageCapture:ImageCapture, img:np.ndarray):
+        # current_time = time.time()
+        # current_seconds = current_time - self.start_time
+        # if current_seconds > self.count_second:
+        #     self.save_video = False
+        #     self.save_video_path = ""
+        #     return
+        pass
+
+    def __flipImage(self, img:np.ndarray):
+        return np.flip(img, 1)
+
+    def __editOverlay(self, img:np.ndarray):
+        """
+        send image must be edited image
+        and save image must be raw image
+        :param img:
+        :return:
+        """
+        canvas = img.copy()
+        four_cut_data = self.data_manager.getSelectedFrame()
+        overlay_img = four_cut_data.overlay_images[self.current_overlay_index]
+        four_cut_photo_rect = four_cut_data.photo_rects[self.current_overlay_index].copy()
+        overlay_relative_photo_rect = four_cut_data.getRelativeOverlayPhotoRect(self.current_overlay_index)
+        edited_overly_img = self.image_editor.cutOverSizedOverlay(four_cut_photo_rect, overlay_relative_photo_rect, overlay_img)
+        sized_up_ratio = self.image_editor.getSizeRatio(canvas, four_cut_photo_rect)
+        overlay_relative_photo_rect.multiply(sized_up_ratio)
+        canvas =  self.image_editor.cutWithRatio(canvas, four_cut_photo_rect)
+        width = overlay_relative_photo_rect.getWidth()
+        height = overlay_relative_photo_rect.getHeight()
+        fixed_size_overlay_img = self.image_editor.resizeWithRatio(edited_overly_img, width, height)
+        cut_image = self.image_editor.cutOverSize(fixed_size_overlay_img, width, height)
+        self.image_editor.overwriteImage(canvas, cut_image, overlay_relative_photo_rect)
+        return canvas
+
+    def __editFrame(self, img:np.ndarray):
+        canvas = img.copy()
+        index = self.current_frame_image_index
+        if index > 3:
+            index = 3
+        four_cut_data = self.data_manager.getSelectedFrame()
+        four_cut_photo_rect = four_cut_data.photo_rects[index].copy()
+        canvas = self.image_editor.cutWithRatio(canvas, four_cut_photo_rect)
+        return canvas
+
+    def receiveImage(self, img:np.ndarray):
+
+        if FLIP_HORIZONTAL:
+            img = self.__flipImage(img)
+        if self.current_overlay_index != NO_OVERLAY:
+            show_img = self.__editOverlay(img)
+        elif self.current_frame_image_index != NO_FRAME_IMAGE:
+            show_img = self.__editFrame(img)
+        else:
+            show_img = img
+
+        self.setImage(self.image_util.cv2QImage(show_img))
+        if self.save_image:
+            self.__saveImage(img)
+
+
     def setImage(self, image:QImage):
         resized_image = QImage.scaled(image, self.image_lb.width(), self.image_lb.height(), Qt.AspectRatioMode.KeepAspectRatio)
         self.current_image = image
