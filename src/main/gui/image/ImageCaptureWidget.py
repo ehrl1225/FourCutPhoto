@@ -182,7 +182,7 @@ class ImageCaptureWidget(CommonWidget):
         return canvas
 
     def receiveImage(self, img:np.ndarray):
-
+        img = self.image_editor.cutUpAndDownImage(img, 95)
         if FLIP_HORIZONTAL:
             img = self.__flipImage(img)
         if self.current_overlay_index != NO_OVERLAY:

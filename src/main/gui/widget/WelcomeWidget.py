@@ -37,7 +37,7 @@ class WelcomeWidget(QWidget):
                                         color: black;  /* 텍스트 색상 */
                                         """)
         
-        self.start_button.setGeometry(600, 290, 290, 100)
+        self.start_button.setGeometry(620, 240, 290, 90)
 
         # welcome_layout = QVBoxLayout()
         # welcome_layout.addWidget(self.welcome_label)

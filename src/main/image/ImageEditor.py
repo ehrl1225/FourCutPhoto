@@ -146,3 +146,9 @@ class ImageEditor:
             self.overwriteImage(canvas, cut_image, photo_rect)
         return canvas
 
+    def cutUpAndDownImage(self, image:np.ndarray, height:int) -> np.ndarray:
+        canvas = image.copy()
+        image_height, image_width, _ = image.shape
+        cropped_canvas = canvas[height:-height, :]
+        return cropped_canvas
+

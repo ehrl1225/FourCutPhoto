@@ -21,7 +21,7 @@ class MainWindow(QMainWindow, CommonObject):
         self.wg = MainWidget(self)
         self.setting_wg = SettingWidget(self)
         self.setCentralWidget(self.wg)
-        # self.showFullScreen()
+        self.showFullScreen()
 
         self.setUI()
 

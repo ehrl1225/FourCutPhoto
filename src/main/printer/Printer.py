@@ -1,17 +1,17 @@
 from PIL import Image, ImageWin
 import win32print
 import win32ui
+import time
 
 class Printer:
     def __init__(self):
-        # self.printer_name = win32print.GetDefaultPrinter()
-        pass
+        self.printer_name = win32print.GetDefaultPrinter()
 
     def set_printer(self, printer_name):
         self.printer_name = printer_name
 
     def get_printers(self):
-        printers = [printer[2] for printer in win32print.EnumPrinters(win32print.PRINTER_ENUM_LOCAL | win32print.PRINTER_ENUM_CONNECTIONS)]
+        printers = [printer for printer in win32print.EnumPrinters(win32print.PRINTER_ENUM_LOCAL | win32print.PRINTER_ENUM_CONNECTIONS)]
         printer_names = [printer[2] for printer in printers]
         return printer_names
 
@@ -29,7 +29,7 @@ class Printer:
         width_4x6, height_4x6 = 1200, 1800  # 4 x 6 inches at 300 DPI
 
         # Resize the image to fit 4x6 size while maintaining aspect ratio
-        image = image.resize((width_4x6, height_4x6), Image.ANTIALIAS)
+        image = image.resize((width_4x6, height_4x6), Image.Resampling.LANCZOS)
 
         # Get the printer device context
         hdc = win32ui.CreateDC()
@@ -52,6 +52,26 @@ class Printer:
         # End the print job
         hdc.EndDoc()
         hdc.DeleteDC()
+
+    def wait_for_print_completion(self):
+        """
+        Wait for the print job to complete.
+        """
+        printer_handle = win32print.OpenPrinter(self.printer_name)
+        try:
+            while True:
+                # Get the printer status
+                printer_status = win32print.GetPrinter(printer_handle, 2)
+                jobs = printer_status.get("Jobs", 0)
+
+                # If there are no jobs left, the print is complete
+                if jobs == 0:
+                    break
+
+                # Wait for a short interval before checking again
+                time.sleep(1)
+        finally:
+            win32print.ClosePrinter(printer_handle)
 
 # Example usage
 if __name__ == "__main__":

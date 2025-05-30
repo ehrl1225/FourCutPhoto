@@ -27,7 +27,7 @@ class ImagePrintingDoneWidget(CommonWidget):
         screen_size = self.screen().size()
         width = screen_size.width()
         height = screen_size.height()
-        background_pixmap = background_pixmap.scaled(width-30, height-30, Qt.AspectRatioMode.KeepAspectRatio)
+        background_pixmap = background_pixmap.scaled(width-50, height-50, Qt.AspectRatioMode.KeepAspectRatio)
 
         self.background_lb.setPixmap(background_pixmap)
 
@@ -39,7 +39,7 @@ class ImagePrintingDoneWidget(CommonWidget):
         self.setUI()
 
     def setUI(self):
-        self.go_next_btn.setGeometry(700, 550, 280, 180)
+        self.go_next_btn.setGeometry(590, 450, 260, 140)
         self.go_next_btn.clicked.connect(self.goNext)
 
 

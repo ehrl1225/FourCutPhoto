@@ -1,28 +1,29 @@
 from PyQt6.QtCore import QThread, pyqtSignal
+
+from .PrinterTask import PrinterTask
 from src.main.printer import Printer
 
 
 class PrintWorker(QThread):
     go:bool
-    don_printing:pyqtSignal
+    done_printing:pyqtSignal = pyqtSignal()
 
 
     def __init__(self, parent=None):
         QThread.__init__(self, parent)
         self.parent = parent
-        self.printers:Printer = list()
-        self.sub_workers = []
-        self.available_workers = []
-        self.print_queue = list()
+        self.printer = Printer()
+        self.task_queue = list()
         self.go = True
 
-    def add_print_image(self, print_image):
-        self.print_queue.append(print_image)
+    def addTask(self, image_path, print_count):
+        printer_task = PrinterTask(image_path, print_count)
+        self.task_queue.append(printer_task)
 
     def run(self):
         while self.go:
-            for worker in self.available_workers:
-                worker.set_image_url(self.print_queue.pop(0))
-                worker.start()
-
-
+            if len(self.task_queue)>0:
+                printer_task = self.task_queue.pop(0)
+                # self.printer.print_image(printer_task.image_path, printer_task.print_count)
+                # self.printer.wait_for_print_completion()
+                self.done_printing.emit()
