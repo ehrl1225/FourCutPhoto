@@ -5,7 +5,7 @@ import cv2
 def imageCaptureTest():
     image = ImageCapture()
     image_editor = ImageEditor()
-    image.setCam(1)
+    image.setCam(2)
     image.openCamera()
     while True:
         img = image.capture()

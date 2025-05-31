@@ -19,6 +19,9 @@ class ImageCaptureWorker(QThread):
         self.image_util = ImageUtil()
         self.imageCapture = ImageCapture()
 
+    def setCameraID(self, camera_id:int):
+        self.imageCapture.setCam(camera_id)
+
     def setCallback(self, callback):
         self.callback = callback
 

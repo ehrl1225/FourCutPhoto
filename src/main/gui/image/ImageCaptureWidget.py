@@ -17,6 +17,8 @@ photo_shoot_sound_url = "./gui/sound/photo_shoot.wav"
 NO_FRAME_IMAGE = -1
 NO_OVERLAY = -1
 FLIP_HORIZONTAL = True
+CUT_UP_AND_DOWN = False
+CAMERA_ID = 2
 
 class ImageCaptureWidget(CommonWidget):
     go_next = pyqtSignal()
@@ -71,6 +73,7 @@ class ImageCaptureWidget(CommonWidget):
         self.image_util = ImageUtil()
 
         self.image_worker = ImageCaptureWorker(self)
+        self.image_worker.setCameraID(CAMERA_ID)
         self.image_worker.setCallback(self.receiveImage)
 
         self.image_worker.start()
@@ -182,7 +185,8 @@ class ImageCaptureWidget(CommonWidget):
         return canvas
 
     def receiveImage(self, img:np.ndarray):
-        img = self.image_editor.cutUpAndDownImage(img, 95)
+        if CUT_UP_AND_DOWN:
+            img = self.image_editor.cutUpAndDownImage(img, 95)
         if FLIP_HORIZONTAL:
             img = self.__flipImage(img)
         if self.current_overlay_index != NO_OVERLAY:
