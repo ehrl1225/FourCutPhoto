@@ -7,7 +7,7 @@ import numpy as np
 class ImageCapture:
     displayCapture:bool = False
     cam_not_found = False
-    cam_id:int = 0
+    cam_id:int = 2
 
     def __init__(self):
         pass
@@ -16,6 +16,9 @@ class ImageCapture:
         self.cam.release()
         if self.displayCapture:
             cv2.destroyAllWindows()
+
+    def setCam(self, cam_id):
+        self.cam_id = cam_id
 
     def openCamera(self):
         self.cam = cv2.VideoCapture(self.cam_id)

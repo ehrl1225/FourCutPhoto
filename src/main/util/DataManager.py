@@ -4,8 +4,8 @@ import sys
 import cv2
 from PyQt6.QtGui import QImage
 
-from src.main.image.FourCutData import FourCutData
-from src.main.image.PhotoRect import PhotoRect
+from image.FourCutData import FourCutData
+from image.PhotoRect import PhotoRect
 import json
 import numpy as np
 import datetime
@@ -95,8 +95,14 @@ class DataManager:
         path = os.path.join(self.base_path, self.result_image_destination, self.photo_save_dir_name+".png")
         cv2.imwrite(path, image)
 
+    def getSaveImageDestination(self):
+        return os.path.join(self.base_path, self.result_image_destination, self.photo_save_dir_name+".png")
+
     def setPeopleCount(self, people_count):
         self.people_count = people_count
+
+    def getPeopleCount(self):
+        return self.people_count
 
     def getFourCutDatas(self):
         return self.four_cut_datas

@@ -1,11 +1,11 @@
-from PyQt6.QtCore import pyqtSlot, QEvent, pyqtSignal, QRect, Qt
-from PyQt6.QtGui import QKeyEvent, QPixmap
-from PyQt6.QtWidgets import QWidget, QVBoxLayout
+from PyQt6.QtCore import pyqtSlot, pyqtSignal
+from PyQt6.QtGui import QKeyEvent
+from PyQt6.QtWidgets import QVBoxLayout
 
-from gui.qt.src.image import ImageWidget
+from gui.image import ImageWidget
 from .SelectPeopleNumberWidget import SelectPeopleNumberWidget
 from .WelcomeWidget import WelcomeWidget
-from gui.qt.src.common.CommonWidget import CommonWidget
+from gui.common import CommonWidget
 
 
 class MainWidget(CommonWidget):

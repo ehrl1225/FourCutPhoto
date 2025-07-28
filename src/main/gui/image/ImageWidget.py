@@ -1,10 +1,9 @@
-import cv2
 from PyQt6.QtGui import QImage, QKeyEvent
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton
+from PyQt6.QtWidgets import QWidget, QVBoxLayout
 from PyQt6.QtCore import pyqtSlot, pyqtSignal
 
-from src.main.printer.Printer import Printer
-from src.main.util import DataManager
+from printer import Printer
+from util import DataManager
 from .ImageCaptureWidget import ImageCaptureWidget
 from .ImageChoosingWidget import ImageChoosingWidget
 from .ImagePrintingDoneWidget import ImagePrintingDoneWidget
@@ -13,7 +12,7 @@ from .FrameChoosingWidget import FrameChoosingWidget
 from enum import Enum
 
 from .ImageShowWidget import ImageShowWidget
-from gui.qt.src.common.CommonWidget import CommonWidget
+from gui.common import CommonWidget
 
 
 class ImageState(Enum):
@@ -69,6 +68,7 @@ class ImageWidget(CommonWidget):
         # self.image_choosing_wg.setSelectedImages()
         # self.toPrintingWidget()
         # self.toImagePrintingDoneWidget()
+        self.printer = Printer()
 
     def hideWidget(self, wg:QWidget):
         self.vbox.removeWidget(wg)
@@ -102,7 +102,13 @@ class ImageWidget(CommonWidget):
 
     def toPrintingWidget(self):
         self.hideWidget(self.current_wg)
+        image_destination = self.data_manager.getSaveImageDestination()
+        image_count = self.data_manager.getPeopleCount()
+        # self.image_printing_wg.printWorker.addTask(image_destination, image_count)
+        img_path = "./src/test/img/test_4_cut.png"
         self.showWidget(self.image_printing_wg)
+        self.printer.print_image(img_path,1)
+        self.image_printing_wg.printWorker.addTask(img_path, 1)
 
     def startCapture(self):
         self.image_capture_wg.startCapture()

@@ -2,8 +2,7 @@ from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QHBoxLayout, QLabel, QPushButton
 from PyQt6.QtCore import Qt, pyqtSignal
 
-from gui.qt.src.common.CommonWidget import CommonWidget
-from src.main.util import DataManager
+from gui.common import CommonWidget
 
 
 class SelectPeopleNumberWidget(CommonWidget):
@@ -18,7 +17,7 @@ class SelectPeopleNumberWidget(CommonWidget):
         self.people_count = 1  # Default number of people
 
         self.background_label = QLabel(self)
-        pixmap = QPixmap("gui/qt/img/select_img.png")
+        pixmap = QPixmap("gui/img/select_img.png")
         screen_size = self.screen().size()
         width = screen_size.width()
         height = screen_size.height()
@@ -36,7 +35,7 @@ class SelectPeopleNumberWidget(CommonWidget):
                                         background-color : white;
                                         color : black
                                         """)
-        self.people_label.setGeometry(640, 315, 200, 100)
+        self.people_label.setGeometry(670, 270, 150, 80)
 
         # Create left and right buttons to adjust the number of people
         self.left_button = QPushButton(self)
@@ -44,7 +43,7 @@ class SelectPeopleNumberWidget(CommonWidget):
         background-color : transparent;
         """)
         self.left_button.clicked.connect(self.decrease_people_count)
-        self.left_button.setGeometry(500, 300, 130, 115)
+        self.left_button.setGeometry(530, 240, 130, 115)
 
         self.right_button = QPushButton(self)
         self.right_button.setStyleSheet("""
@@ -52,7 +51,7 @@ class SelectPeopleNumberWidget(CommonWidget):
         
         """)
         self.right_button.clicked.connect(self.increase_people_count)
-        self.right_button.setGeometry(860, 310, 130, 115)
+        self.right_button.setGeometry(860, 240, 130, 115)
 
         # Create a layout for the buttons and label
         button_layout = QHBoxLayout()

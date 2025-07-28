@@ -1,13 +1,12 @@
 from functools import partial
 
 from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QButtonGroup, QRadioButton, \
-    QGridLayout
-from PyQt6.QtGui import QPixmap, QImage
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QButtonGroup, QRadioButton
+from PyQt6.QtGui import QPixmap
 
-from gui.qt.src.common.CommonObject import CommonObject
-from gui.qt.src.custom_widget.ClickableLabel import ClickableLabel
-from src.main.image import ImageUtil, ImageEditor
+from gui.common import CommonObject
+from gui.custom_widget import ClickableLabel
+from image import ImageUtil, ImageEditor
 
 
 class FrameChoosingWidget(QWidget):
