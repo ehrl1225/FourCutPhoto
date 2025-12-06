@@ -2,7 +2,6 @@ from PyQt6.QtGui import QImage, QKeyEvent
 from PyQt6.QtWidgets import QWidget, QVBoxLayout
 from PyQt6.QtCore import pyqtSlot, pyqtSignal
 
-from printer import Printer
 from util import DataManager
 from .ImageCaptureWidget import ImageCaptureWidget
 from .ImageChoosingWidget import ImageChoosingWidget
@@ -68,7 +67,6 @@ class ImageWidget(CommonWidget):
         # self.image_choosing_wg.setSelectedImages()
         # self.toPrintingWidget()
         # self.toImagePrintingDoneWidget()
-        self.printer = Printer()
 
     def hideWidget(self, wg:QWidget):
         self.vbox.removeWidget(wg)
@@ -107,7 +105,6 @@ class ImageWidget(CommonWidget):
         # self.image_printing_wg.printWorker.addTask(image_destination, image_count)
         img_path = "./src/test/img/test_4_cut.png"
         self.showWidget(self.image_printing_wg)
-        self.printer.print_image(img_path,1)
         self.image_printing_wg.printWorker.addTask(img_path, 1)
 
     def startCapture(self):
