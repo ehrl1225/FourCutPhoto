@@ -3,7 +3,6 @@ from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QWidget, QLabel, QPushButton, QHBoxLayout
 
 from gui.common import CommonObject
-from gui.worker.PrintWorker import PrintWorker
 from image import ImageUtil, ImageEditor
 
 TOTAL_PRINTING_IMAGE_COUNT = 2
@@ -46,10 +45,6 @@ class ImagePrintingWidget(QWidget):
         self.timer = QTimer()
         self.timer.start(1000)
         self.timer.timeout.connect(self.countDown)
-
-        self.printWorker = PrintWorker()
-        self.printWorker.done_printing.connect(self.printingDone)
-        self.printWorker.start()
 
         self.setLayout(hbox)
         self.setUI()

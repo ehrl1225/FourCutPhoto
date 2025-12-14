@@ -1,28 +1,94 @@
 {
   "image_rect": [
     {
-      "start_x" : 86,
-      "start_y" : 370,
-      "end_x" : 522,
-      "end_y" : 895
+      "start_x": 30,
+      "start_y": 256,
+      "end_x": 342,
+      "end_y": 629
     },
     {
-      "start_x" : 86,
-      "start_y" : 920,
-      "end_x" : 522,
-      "end_y" : 1444
+      "start_x": 29,
+      "start_y": 645,
+      "end_x": 340,
+      "end_y":1018
     },
     {
-      "start_x" : 558,
-      "start_y" : 104,
-      "end_x" : 995,
-      "end_y" : 628
+      "start_x":374,
+      "start_y":77,
+      "end_x":686,
+      "end_y":451
     },
     {
-      "start_x" : 558,
-      "start_y" : 653,
-      "end_x" : 994,
-      "end_y" : 1178
+      "start_x": 376,
+      "start_y": 466,
+      "end_x": 687,
+      "end_y": 840
+    }
+  ],
+  "overlay_on_cam": false,
+  "overlay_rect": [
+    {
+      "image_file":"1.png",
+      "start_x":68,
+      "start_y":74,
+      "end_x":304,
+      "end_y":310
+    },
+    {
+      "image_file": "2.png",
+      "start_x": 289,
+      "start_y": 578,
+      "end_x": 361,
+      "end_y": 646
+    },
+    {
+      "image_file": "2.png",
+      "start_x": 12,
+      "start_y": 655,
+      "end_x": 83,
+      "end_y": 724
+    },
+    {
+      "image_file": "3.png",
+      "start_x": 0,
+      "start_y": 928,
+      "end_x": 121,
+      "end_y": 1086
+    },
+    {
+      "image_file": "2.png",
+      "start_x": 416,
+      "start_y": 30,
+      "end_x": 487,
+      "end_y": 99
+    },
+    {
+      "image_file": "2.png",
+      "start_x": 524,
+      "start_y": 398,
+      "end_x": 595,
+      "end_y": 467
+    },
+    {
+      "image_file": "4.png",
+      "start_x": 363,
+      "start_y": 752,
+      "end_x": 401,
+      "end_y": 860
+    },
+    {
+      "image_file": "5.png",
+      "start_x": 397,
+      "start_y": 782,
+      "end_x": 430,
+      "end_y": 859
+    },
+    {
+      "image_file": "2.png",
+      "start_x": 637,
+      "start_y": 798,
+      "end_x": 709,
+      "end_y": 865
     }
   ]
 }

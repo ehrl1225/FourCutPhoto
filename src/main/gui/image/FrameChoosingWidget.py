@@ -30,7 +30,7 @@ class FrameChoosingWidget(QWidget):
 
         self.button_group = QButtonGroup()
 
-        for i in range(6):
+        for i in range(2):
             # Create a vertical layout for each image and its radio button
             vbox = QVBoxLayout()
 
@@ -75,8 +75,8 @@ class FrameChoosingWidget(QWidget):
 
     def setImages(self):
         four_cut_datas = self.data_manager.getFourCutDatas()
-        width = 200
-        height = 340
+        width = 400
+        height = 600
         for index, four_cut_data in enumerate(four_cut_datas):
             if four_cut_data.hasOverlayImages():
                 photo = self.image_editor.editOverlayImage(four_cut_data, four_cut_data.photo)
