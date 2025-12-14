@@ -8,18 +8,7 @@ from image.FourCutData import FourCutData
 from image.PhotoRect import PhotoRect
 import json
 import numpy as np
-import datetime
-
-import hashlib
-def get_hash_value(in_str, in_digest_bytes_size=64, in_return_type='digest'):
-    """해시값을 구한다
-    Parameter: in_str: 해싱할문자열, in_digest_bytes_size: Digest바이트크기,
-               in_return_type: 반환형태(digest or hexdigest or number) """
-    assert 1 <= in_digest_bytes_size and in_digest_bytes_size <= 64
-    blake  = hashlib.blake2b(in_str.encode('utf-8'), digest_size=in_digest_bytes_size)
-    if in_return_type == 'hexdigest': return blake.hexdigest()
-    elif in_return_type == 'number': return int(blake.hexdigest(), base=16)
-    return blake.digest()
+import uuid
 
 START_X = "start_x"
 START_Y = "start_y"
@@ -30,7 +19,7 @@ OVERLAY_RECT = "overlay_rect"
 OVERLAY_ON_CAM = "overlay_on_cam"
 IMAGE_FILE = "image_file"
 TEST_MODE = False
-DEFAULT_PHOTO_COUNT = 6
+DEFAULT_PHOTO_COUNT = 4
 
 class DataManager:
     """
@@ -81,11 +70,7 @@ class DataManager:
 
     def setSelectedFrameIndex(self, selected_frame_index):
         self.selected_frame_index = selected_frame_index
-        four_cut_data = self.four_cut_datas[self.selected_frame_index]
-        if four_cut_data.overlayOnCam():
-            self.photo_count = four_cut_data.getOverlayImageCount()
-        else:
-            self.photo_count = DEFAULT_PHOTO_COUNT
+        self.photo_count = DEFAULT_PHOTO_COUNT
 
 
     def getSelectedFrameIndex(self):
@@ -189,9 +174,7 @@ class DataManager:
 
 
     def makePhotoDirectory(self):
-        now = datetime.datetime.now()
-        now_str = now.strftime("%Y%m%d%H%M%S")
-        photo_dir_name = get_hash_value(in_str=now_str, in_digest_bytes_size=10, in_return_type='hexdigest')
+        photo_dir_name = uuid.uuid4().hex
         base_path = DataManager.base_path
         result_image_source = DataManager.result_image_source
         result_image_source_path = os.path.join(base_path, result_image_source)

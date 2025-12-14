@@ -25,7 +25,7 @@
       "end_y": 840
     }
   ],
-  "overlay_on_cam": true,
+  "overlay_on_cam": false,
   "overlay_rect": [
     {
       "image_file":"1.png",

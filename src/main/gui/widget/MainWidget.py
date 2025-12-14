@@ -22,7 +22,7 @@ class MainWidget(CommonWidget):
         self.img_wg = ImageWidget(self)
 
         self.vbox = QVBoxLayout()
-        self.vbox.addWidget(self.welcome_wg)
+        self.vbox.addWidget(self.img_wg)
 
         self.setLayout(self.vbox)
 
@@ -36,9 +36,10 @@ class MainWidget(CommonWidget):
         # self.goSelectPeopleNumber()
 
     def setUI(self):
-        self.welcome_wg.go_next.connect(self.goSelectPeopleNumber)
-        self.spn_wg.go_next.connect(self.goImage)
-        self.img_wg.done_service.connect(self.finishService)
+        # self.welcome_wg.go_next.connect(self.goSelectPeopleNumber)
+        # self.spn_wg.go_next.connect(self.goImage)
+        # self.img_wg.done_service.connect(self.finishService)
+        pass
 
     def goSelectPeopleNumber(self):
         self.vbox.removeWidget(self.welcome_wg)

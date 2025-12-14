@@ -54,8 +54,7 @@ class ImageWidget(CommonWidget):
         self.image_capture_wg.go_next.connect(self.capturedImages)
         self.image_choosing_wg.go_next.connect(self.toPrintingWidget)
         self.image_show_wg.go_back.connect(self.toImageCaptureWidget)
-        self.image_show_wg.go_next.connect(self.toPrintingWidget)
-        self.image_printing_wg.go_next.connect(self.toImagePrintingDoneWidget)
+        self.image_show_wg.go_next.connect(self.toImagePrintingDoneWidget)
         self.image_printing_done_wg.go_next.connect(self.toFrameChoosingWidget)
 
         # self.data_manager.setSelectedFrameIndex(2)
@@ -79,10 +78,7 @@ class ImageWidget(CommonWidget):
     def capturedImages(self):
         frame = self.data_manager.getSelectedFrame()
         self.image_capture_wg.endCapture()
-        if frame.overlayOnCam():
-            self.toImageShowWidget()
-        else:
-            self.toImageChoosingWidget()
+        self.toImageShowWidget()
 
     def toImageShowWidget(self):
         self.hideWidget(self.current_wg)
