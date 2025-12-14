@@ -115,12 +115,38 @@ class ImageEditor:
         end_x = photo_rect.end_x
         # Check if the photo has an alpha channel
         if photo.shape[2] == 4:  # RGBA image
-            alpha_channel = photo[:, :, 3] / 255.0  # Normalize alpha to range [0, 1]
+            # Determine if the photo is in [0,1] float range or [0,255] range.
+            # np.nanmax ignores NaN values for the max calculation.
+            max_val = np.nanmax(photo)
+            is_float_normalized = photo.dtype.kind == 'f' and max_val <= 1.0
+
+            photo_to_blend = photo.astype(np.float32)
+            photo_rgb = photo_to_blend[:, :, :3]
+
+            if is_float_normalized:
+                # Values are in [0,1], so use alpha directly and scale RGB up to 255.
+                alpha_channel = photo_to_blend[:, :, 3]
+                photo_rgb = photo_rgb * 255
+            else:
+                # Values are in [0,255], so normalize alpha and use RGB directly.
+                alpha_channel = photo_to_blend[:, :, 3] / 255.0
+
             for c in range(3):  # Iterate over RGB channels
-                canvas[start_y:end_y, start_x:end_x, c] = (
-                    alpha_channel * photo[:, :, c] +
+                # Perform alpha blending.
+                blend_result = (
+                    alpha_channel * photo_rgb[:, :, c] +
                     (1 - alpha_channel) * canvas[start_y:end_y, start_x:end_x, c]
                 )
+
+                # Find where the blending result is NaN
+                nan_mask = np.isnan(blend_result)
+                original_pixels = canvas[start_y:end_y, start_x:end_x, c]
+
+                # Replace NaN values with the original canvas pixels.
+                blend_result[nan_mask] = original_pixels[nan_mask]
+
+                # Clip the result and assign back to the canvas.
+                canvas[start_y:end_y, start_x:end_x, c] = np.clip(blend_result, 0, 255)
         else:  # No alpha channel, overwrite directly
             canvas[start_y:end_y, start_x:end_x] = photo
 

@@ -127,8 +127,7 @@ class DataManager:
 
         four_cut_datas:list[FourCutData] = list()
 
-        for imageindex in range(1,7):
-            image = f"frame{imageindex}.jpg"
+        for image in os.listdir(image_path):
             img = cv2.imread(os.path.join(image_path, image))
 
             img_name = os.path.splitext(image)[0]
