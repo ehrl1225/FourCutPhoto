@@ -7,10 +7,11 @@ setup(
     author="ehrl1234",
     author_email="wjdwntls1225@naver.com",
     packages=find_packages(include=["FourCutPhoto", "FourCutPhoto.*"]),
-    include_requires=[
+    install_requires=[
         "PyQt6",
         "opencv-python",
         "pillow",
+        "win32printing"
     ],
     entry_points={
         'console_scripts': [
